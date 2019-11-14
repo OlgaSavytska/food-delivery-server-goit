@@ -1,25 +1,19 @@
 const http = require('http');
-const url = require('url');
+const router = require('./routes');
 
-const morgan = require('morgan');
-const router = require('./routes/router');
-
-const logger = morgan('combined');
 
 const startServer = port => {
-
-  const server = http.createServer((request, response) => {
-
-    // Get route from the request
-    const parsedUrl = url.parse(request.url);
-
-    // Get router function
-    const func = router[parsedUrl.pathname] || router.default;
-
-    logger(request, response, () => func(request, response));
-  });
-
-  server.listen(port);
+    const server = http.createServer((request, response) => {
+        if (request.url.includes('/products') && request.method === 'GET') {
+            router.products(request, response);
+        } else if (request.url.includes('/signup') && request.method === 'POST') {
+            router.signUp(request, response);
+        } else {
+            router.default(request, response);
+        }
+        return response.end();
+    });
+    server.listen(port);
 };
 
 module.exports = startServer;
