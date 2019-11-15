@@ -5,8 +5,8 @@ const path = require("path");
 const user = (request, response) => {
     let body = '';
     request.on('data', function (data) {
-            body = body + data;
-        })
+        body = body + data;
+    })
         .on('end', function () {
             const post = qs.parse(body);
             const result = {
@@ -26,10 +26,10 @@ const user = (request, response) => {
                 }
             );
 
-            // response.writeHead(200, {
-            //     'Content-Type': 'application/json'
-            // });
-            // response.write(JSON.stringify(result));
+            response.writeHead(200, {
+                'Content-Type': 'application/json'
+            });
+            response.write(JSON.stringify(result));
         })
 
 
